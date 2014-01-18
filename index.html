@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+
+  <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  <script src='main.js'></script>
+
+  <style>
+    span.elementSep {
+      color: #999;
+    }
+    .ediOutBlock { counter-reset: listing; }
+    span.segment { counter-increment: listing; }
+    .ediOutBlock span.segment:before { content: counter(listing) ". "; color: gray; }
+  </style>
+</head>
+<body ng-app='ediLint'>
+  <div ng-controller='EdiCtrl'>
+    <h1 class='text-center'>EDI Lint</h1>
+    <textarea placeholder='Paste your raw EDI here.' ng-model='ediIn' class='form-control' rows='10' spellcheck='false'></textarea>
+    <div class='panel panel-danger' ng-show='ediOut.errors.length > 0'>
+      <div class='panel panel-heading'>
+        <h3 class="panel-title">Parsing Error</h3>
+      </div>
+      <div class='panel-body'>
+        <ul class='list-unstyled'>
+          <li ng-repeat='e in ediOut.errors'>
+            {{e}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <h2>Parsed EDI</h2>
+    <pre class='pre-scrollable ediOutBlock'>
+      <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span edi-segment='seg'></span></span></span></div>
+    </pre>
+    <div>
+      Element Separator: {{ediOut.elementSeparator}}
+    </div>
+    <div>
+      Segment Terminator: {{ediOut.segmentTerminatorDesc}}
+    </div>
+    <div>
+      Rows: {{ediOut.segments.length}}
+    </div>
+    <div>
+      <span ng-repeat='propt in ediOut.segmentTypes'>
+        <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
+      </span>
+    </div>
+    <a href='' ng-hide='view.showJSON' ng-click='view.showJSON=true'>JSON</a>
+    <div ng-show='view.showJSON'>
+      <h2>JSON</h2>
+      <pre>{{ediOut}}</pre>
+      <a href='' ng-click='view.showJSON=false'>hide</a>
+    </div>
+  </div>
+  <div>
+    <small>This tool is provided AS IS without any warranty. Parsing is done in your browser so the file size limitations will be related to your computer.  Nothing is sent to the server.</small>
+  </div>
+</body>
+</html>
