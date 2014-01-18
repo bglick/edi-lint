@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>EDI Lint: EDI Visualization In Your Browser</title>
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 
@@ -21,8 +21,13 @@
   </style>
 </head>
 <body ng-app='ediLint'>
-  <div ng-controller='EdiCtrl'>
+ <a href="https://github.com/bglick/edi-lint"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub"></a>
+ <div ng-controller='EdiCtrl'>
     <h1 class='text-center'>EDI Lint</h1>
+    <ol>
+      <li>Paste EDI below and you'll get a nicely formatted version.</li>
+      <li>Use the buttons at the bottom to turn segment types on &amp; off.</li>
+    </ol>
     <textarea placeholder='Paste your raw EDI here.' ng-model='ediIn' class='form-control' rows='10' spellcheck='false'></textarea>
     <div class='panel panel-danger' ng-show='ediOut.errors.length > 0'>
       <div class='panel panel-heading'>
@@ -61,8 +66,8 @@
       <a href='' ng-click='view.showJSON=false'>hide</a>
     </div>
   </div>
-  <div>
-    <small>This tool is provided AS IS without any warranty. Parsing is done in your browser so the file size limitations will be related to your computer.  Nothing is sent to the server.</small>
+  <div class='well'>
+    <small>This tool is provided AS IS without any warranty. Check out the author at <a href='http://brian-glick.com'>http://brian-glick.com</a>. <br />Parsing is done in your browser so the file size limitations will be related to your computer.  Nothing is sent to the server.</small>
   </div>
 </body>
 </html>
