@@ -89,7 +89,17 @@ ediLint.controller('EdiCtrl',['$scope','ediParser',function($scope,ediParser) {
   $scope.hiddenSegmentTypes = {};
 
   $scope.toggleSegmentHide = function(t) {
-    $scope.hiddenSegmentTypes[t] = !$scope.hiddenSegmentTypes[t]
+    $scope.hiddenSegmentTypes[t] = !$scope.hiddenSegmentTypes[t];
+  }
+  $scope.showAllSegments = function() {
+    $scope.hiddenSegmentTypes = {};
+  }
+  $scope.hideAllSegments = function() {
+    var segs = $scope.ediOut.segments;
+    var i;
+    for(i=0;i<segs.length;i++) {
+      $scope.hiddenSegmentTypes[segs[i].type] = true;
+    }
   }
 
   $scope.$watch('ediIn',function(nv,ov) {

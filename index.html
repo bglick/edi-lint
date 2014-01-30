@@ -46,6 +46,15 @@
       <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span edi-segment='seg'></span></span></span></div>
     </pre>
     <div>
+      <span ng-show='ediOut.segments'>
+        <button class='btn btn-sm btn-success' ng-click='showAllSegments()'>All</button>
+        <button class='btn btn-sm btn-success' ng-click='hideAllSegments()'>None</button>
+      </span>
+      <span ng-repeat='propt in ediOut.segmentTypes'>
+        <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
+      </span>
+    </div>
+    <div>
       Element Separator: {{ediOut.elementSeparator}}
     </div>
     <div>
@@ -53,11 +62,6 @@
     </div>
     <div>
       Rows: {{ediOut.segments.length}}
-    </div>
-    <div>
-      <span ng-repeat='propt in ediOut.segmentTypes'>
-        <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
-      </span>
     </div>
     <a href='' ng-hide='view.showJSON' ng-click='view.showJSON=true'>JSON</a>
     <div ng-show='view.showJSON'>
@@ -69,5 +73,6 @@
   <div class='well'>
     <small>This tool is provided AS IS without any warranty. Check out the author at <a href='http://brian-glick.com'>http://brian-glick.com</a>. <br />Parsing is done in your browser so the file size limitations will be related to your computer.  Nothing is sent to the server.</small>
   </div>
+  <script src='my-ga.js'></script>
 </body>
 </html>
