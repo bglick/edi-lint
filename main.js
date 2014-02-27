@@ -87,6 +87,10 @@ ediLint.controller('EdiCtrl',['$scope','ediParser',function($scope,ediParser) {
   $scope.ediIn = '';
   $scope.ediOut = {};
   $scope.hiddenSegmentTypes = {};
+  $scope.zoomSegment = {};
+  $scope.setZoomSegment = function(s) {
+    $scope.zoomSegment = s;
+  }
 
   $scope.toggleSegmentHide = function(t) {
     $scope.hiddenSegmentTypes[t] = !$scope.hiddenSegmentTypes[t];

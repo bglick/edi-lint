@@ -18,6 +18,16 @@
     .ediOutBlock { counter-reset: listing; }
     span.segment { counter-increment: listing; }
     .ediOutBlock span.segment:before { content: counter(listing) ". "; color: gray; }
+    #zoomTable {
+      width:100%;
+      border:1px solid #333;
+      margin-bottom: 20px;
+    }
+    #zoomTable thead {
+      background-color: black;
+      color: white;
+      text-align: center;
+    }
   </style>
 </head>
 <body ng-app='ediLint'>
@@ -43,7 +53,7 @@
     </div>
     <h2>Parsed EDI</h2>
     <pre class='pre-scrollable ediOutBlock'>
-      <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span edi-segment='seg'></span></span></span></div>
+      <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span ng-click='setZoomSegment(seg)' edi-segment='seg'></span></span></span></div>
     </pre>
     <div>
       <span ng-show='ediOut.segments'>
@@ -54,6 +64,24 @@
         <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
       </span>
     </div>
+    <h3>Zoom Segment</h3>
+    <div ng-show='zoomSegment'>
+      <table id='zoomTable'>
+        <thead>
+          <tr>
+            <th ng-repeat='el in zoomSegment.elements track by $index'><span ng-show='$index>0'>{{$index}}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td ng-repeat="el in zoomSegment.elements track by $index">{{el}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div ng-hide='zoomSegment'>
+      Click a segment above to zoom
+    </div>
     <div>
       Element Separator: {{ediOut.elementSeparator}}
     </div>
@@ -62,12 +90,6 @@
     </div>
     <div>
       Rows: {{ediOut.segments.length}}
-    </div>
-    <a href='' ng-hide='view.showJSON' ng-click='view.showJSON=true'>JSON</a>
-    <div ng-show='view.showJSON'>
-      <h2>JSON</h2>
-      <pre>{{ediOut}}</pre>
-      <a href='' ng-click='view.showJSON=false'>hide</a>
     </div>
   </div>
   <div class='well'>
