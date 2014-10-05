@@ -35,10 +35,11 @@
  <div ng-controller='EdiCtrl'>
     <h1 class='text-center'>EDI Lint</h1>
     <ol>
-      <li>Paste EDI below and you'll get a nicely formatted version.</li>
+      <li>Choose a file or paste <a href='http://www.x12.org/about/faqs.cfm' target='_blank'>EDI</a> below.</li>
       <li>Use the buttons at the bottom to turn segment types on &amp; off.</li>
     </ol>
-    <textarea placeholder='Paste your raw EDI here.' ng-model='ediIn' class='form-control' rows='10' spellcheck='false'></textarea>
+    <input type='file' id='ediFile' class='form-control'/>
+    <textarea placeholder='Choose a file above, or paste your raw EDI here.' ng-model='ediIn' class='form-control' rows='10' spellcheck='false' id='ediBox'></textarea>
     <div class='panel panel-danger' ng-show='ediOut.errors.length > 0'>
       <div class='panel panel-heading'>
         <h3 class="panel-title">Parsing Error</h3>
@@ -95,6 +96,31 @@
   <div class='well'>
     <small>This tool is provided AS IS without any warranty. Check out the author at <a href='http://brian-glick.com'>http://brian-glick.com</a>. <br />Parsing is done in your browser so the file size limitations will be related to your computer.  Nothing is sent to the server.</small>
   </div>
+  <script type="text/javascript">
+    $(function() {
+      if(FileReader) {
+        $('#ediFile').change(function(evt) {
+          var files, f, reader;
+          files = evt.target.files;
+          f = files[0];
+          if(f) {
+            reader = new FileReader();
+            reader.onload = function (event) {
+              var scp;
+              scp = $("#ediBox").scope();
+              scp.$apply(function() {
+                scp.ediIn = event.target.result;
+              });
+            }
+            reader.readAsText(f);
+          }
+        });
+      }
+      else {
+        $('#ediFile').remove();
+      }
+    });
+  </script>
   <script src='my-ga.js'></script>
 </body>
 </html>
