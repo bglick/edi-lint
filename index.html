@@ -16,7 +16,10 @@
       color: #999;
     }
     .ediOutBlock { counter-reset: listing; }
-    span.segment { counter-increment: listing; }
+    span.segment { 
+      counter-increment: listing; 
+      cursor: pointer;
+    }
     .ediOutBlock span.segment:before { content: counter(listing) ". "; color: gray; }
     #zoomTable {
       width:100%;
@@ -40,7 +43,7 @@
     </ol>
     <input type='file' id='ediFile' class='form-control'/>
     <textarea placeholder='Choose a file above, or paste your raw EDI here.' ng-model='ediIn' class='form-control' rows='10' spellcheck='false' id='ediBox'></textarea>
-    <div class='panel panel-danger' ng-show='ediOut.errors.length > 0'>
+    <div class='panel panel-danger' ng-show='ediOut.errors'>
       <div class='panel panel-heading'>
         <h3 class="panel-title">Parsing Error</h3>
       </div>
@@ -52,45 +55,47 @@
         </ul>
       </div>
     </div>
-    <h2>Parsed EDI</h2>
-    <pre class='pre-scrollable ediOutBlock'>
-      <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span ng-click='setZoomSegment(seg)' edi-segment='seg'></span></span></span></div>
-    </pre>
-    <div>
-      <span ng-show='ediOut.segments'>
-        <button class='btn btn-sm btn-success' ng-click='showAllSegments()'>All</button>
-        <button class='btn btn-sm btn-success' ng-click='hideAllSegments()'>None</button>
-      </span>
-      <span ng-repeat='propt in ediOut.segmentTypes'>
-        <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
-      </span>
-    </div>
-    <h3>Zoom Segment</h3>
-    <div ng-show='zoomSegment'>
-      <table id='zoomTable'>
-        <thead>
-          <tr>
-            <th ng-repeat='el in zoomSegment.elements track by $index'><span ng-show='$index>0'>{{$index}}</span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td ng-repeat="el in zoomSegment.elements track by $index">{{el}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div ng-hide='zoomSegment'>
-      Click a segment above to zoom
-    </div>
-    <div>
-      Element Separator: {{ediOut.elementSeparator}}
-    </div>
-    <div>
-      Segment Terminator: {{ediOut.segmentTerminatorDesc}}
-    </div>
-    <div>
-      Rows: {{ediOut.segments.length}}
+    <div ng-show='ediOut.segments'>
+      <h2 id='parsedEdiHeading'>Parsed EDI</h2>
+      <pre class='pre-scrollable ediOutBlock'>
+        <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span ng-click='setZoomSegment(seg)' edi-segment='seg'></span></span></span></div>
+      </pre>
+      <div>
+        <span ng-show='ediOut.segments'>
+          <button class='btn btn-sm btn-success' ng-click='showAllSegments()'>All</button>
+          <button class='btn btn-sm btn-success' ng-click='hideAllSegments()'>None</button>
+        </span>
+        <span ng-repeat='propt in ediOut.segmentTypes'>
+          <button class='btn btn-sm' ng-class='{"btn-default":hiddenSegmentTypes[propt],"btn-primary":!hiddenSegmentTypes[propt]}' ng-click='toggleSegmentHide(propt)'>{{propt}}</button>
+        </span>
+      </div>
+      <h3>Zoom Segment</h3>
+      <div ng-show='zoomSegment'>
+        <table id='zoomTable'>
+          <thead>
+            <tr>
+              <th ng-repeat='el in zoomSegment.elements track by $index'><span ng-show='$index>0'>{{$index}}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td ng-repeat="el in zoomSegment.elements track by $index">{{el}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div ng-hide='zoomSegment'>
+        Click a segment above to zoom
+      </div>
+      <div>
+        Element Separator: {{ediOut.elementSeparator}}
+      </div>
+      <div>
+        Segment Terminator: {{ediOut.segmentTerminatorDesc}}
+      </div>
+      <div>
+        Rows: {{ediOut.segments.length}}
+      </div>
     </div>
   </div>
   <div class='well'>
