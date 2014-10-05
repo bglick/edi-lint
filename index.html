@@ -16,9 +16,11 @@
       color: #999;
     }
     .ediOutBlock { counter-reset: listing; }
+    .segment {
+      cursor: pointer;
+    }
     span.segment { 
       counter-increment: listing; 
-      cursor: pointer;
     }
     .ediOutBlock span.segment:before { content: counter(listing) ". "; color: gray; }
     #zoomTable {
@@ -60,7 +62,7 @@
           </thead>
           <tbody>
             <tr>
-              <td ng-repeat="el in zoomSegment.elements track by $index" ng-class="{'info':el.highlighted}" ng-click="el.highlighted=!el.highlighted">{{el.content}}</td>
+              <td class='segment' ng-repeat="el in zoomSegment.elements track by $index" ng-class="{'info':el.highlighted}" ng-click="el.highlighted=!el.highlighted">{{el.content}}</td>
             </tr>
           </tbody>
         </table>
