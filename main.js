@@ -2,7 +2,7 @@ var ediLint = angular.module('ediLint',[]);
 ediLint.factory('ediParser',[function() {
   return {
     parse: function(txt) {
-      var r, rawSegments, i, curSeg, sTypes=Object.create(null);
+      var r, rawSegments, i, curSeg, rawElements, elementObjects, sTypes=Object.create(null);
       r = {errors:[],segments:[],segmentTypes:[]};
       if(txt==undefined || txt.length==0) {
         return r;
@@ -35,7 +35,12 @@ ediLint.factory('ediParser',[function() {
       r.segments = []
       for(i=0;i<rawSegments.length;i++) {
         if(rawSegments[i].trim().length>0) {
-          seg = {row:i+1,elements:rawSegments[i].split(r.elementSeparator),separator:r.elementSeparator}
+          rawElements = rawSegments[i].split(r.elementSeparator);
+          elementObjects = new Array(rawElements.length)
+          for (var j = rawElements.length - 1; j >= 0; j--) {
+            elementObjects[j] = {content:rawElements[j]};
+          };
+          seg = {row:i+1,elements:elementObjects,separator:r.elementSeparator};
           seg.type = seg.elements[0];
           r.segments.push(seg);
           sTypes[seg.type] = true;
@@ -57,28 +62,7 @@ ediLint.directive('ediSegment',[function() {
       ediSegment:'='
     },
     restrict:'A',
-    link: function(scope,el,attrs) {
-      var i,
-        h = '', 
-        es = scope.ediSegment,
-        hEl;
-      if(es.elements.length==1 && es.elements[0].trim().length==0) {
-        return;
-      }
-      for(i=0;i<es.elements.length;i++) {
-        hEl = es.elements[i].replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#39;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/ /,'&nbsp;');
-        h += '<span class="elementContent">'+hEl+'</span>';
-        if(i<es.elements.length-1) {
-          h += '<span class="elementSep">'+es.separator+'</span>';
-        }
-      }
-      $(el).html(h);
-    }
+    template:"<span ng-repeat='el in ediSegment.elements'><span class='elementContent' ng-class='{\"bg-primary\":el.highlighted}'>{{el.content}}</span><span class='elementSep'>{{ediSegment.separator}}</span></span>"
   };
 }]);
 
