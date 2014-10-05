@@ -8,7 +8,7 @@ ediLint.factory('ediParser',[function() {
         return r;
       }
       if(!txt.match(/^ISA.{102}/)) {
-        r.errors.push("Your EDI must start with a valid ISA segment.");
+        r.errors.push("Your EDI must start with a valid ISA segment, not: " + txt.slice(0,106));
         return r;
       }
       r.elementSeparator = txt[3];
