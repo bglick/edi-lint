@@ -41,7 +41,7 @@ ediLint.factory('ediParser',[function() {
             elementObjects[j] = {content:rawElements[j]};
           };
           seg = {row:i+1,elements:elementObjects,separator:r.elementSeparator};
-          seg.type = seg.elements[0];
+          seg.type = seg.elements[0].content;
           r.segments.push(seg);
           sTypes[seg.type] = true;
         }
