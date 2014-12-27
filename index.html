@@ -12,7 +12,7 @@
   <script src='main.js'></script>
 
   <style>
-    span.elementSep {
+    .elementSep {
       color: #999;
     }
     .ediOutBlock { counter-reset: listing; }
@@ -21,6 +21,10 @@
     }
     span.segment { 
       counter-increment: listing; 
+    }
+    .segment-inner:hover {
+      text-decoration: underline;
+      color: blue;
     }
     .ediOutBlock span.segment:before { content: counter(listing) ". "; color: gray; }
     #zoomTable {
@@ -76,7 +80,7 @@
         Rows: <em>{{ediOut.segments.length}}</em>
       </div>
       <pre class='pre-scrollable ediOutBlock'>
-        <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]'><span ng-click='setZoomSegment(seg)' edi-segment='seg'></span></span></span></div>
+        <div ng-repeat='seg in ediOut.segments'><span class='segment'><span ng-hide='hiddenSegmentTypes[seg.type]' class='segment-inner'><span ng-click='setZoomSegment(seg)' edi-segment='seg'></span></span></span></div>
       </pre>
       <div>
         <span ng-show='ediOut.segments'>
@@ -107,7 +111,7 @@
               scp.$apply(function() {
                 scp.ediIn = event.target.result;
               });
-            }
+            };
             reader.readAsText(f);
           }
         });
